@@ -1,5 +1,5 @@
 /* GAINS service worker — cache-first so the app opens with no signal in the gym */
-const CACHE = 'gains-v1';
+const CACHE = 'gains-v2';
 const CORE = ['./', './index.html'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).catch(()=>{}));
