@@ -1,5 +1,5 @@
 /* GAINS service worker — cache-first so the app opens with no signal in the gym */
-const CACHE = 'gains-v2';
+const CACHE = 'gains-v3';
 const CORE = ['./', './index.html'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).catch(()=>{}));
@@ -10,6 +10,7 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  if (!e.request.url.startsWith(self.location.origin)) return; /* never intercept API calls (OpenFoodFacts etc.) */
   e.respondWith(
     caches.match(e.request, {ignoreSearch: true}).then(hit => {
       const net = fetch(e.request).then(res => {
